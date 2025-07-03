@@ -34,26 +34,26 @@ check: format lint test
 # User commands
 
 sync:
-    uv sync
+	uv sync
 
 setup:
-    cp .env.example .env
-    @echo "Remember to edit .env with your API keys!"
+	cp .env.example .env
+	@echo "Remember to edit .env with your API keys!"
 
 run:
-    uv run graphiti_mcp_server.py
+	uv run graphiti_mcp_server.py
 
 run-sse:
-    uv run graphiti_mcp_server.py --transport sse
+	uv run graphiti_mcp_server.py --transport sse
 
 run-docker:
-    docker compose up
+	docker compose up
 
 clean:
-    docker compose down
-    rm -rf __pycache__
+	docker compose down
+	rm -rf __pycache__
 
 merge-upstream:
-    git fetch upstream
-    git merge upstream/main
+	git fetch upstream
+	git merge upstream/main
 

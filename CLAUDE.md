@@ -45,7 +45,7 @@ uv sync --extra dev
 # Format code (ruff import sorting + formatting)
 make format
 
-# Lint code (ruff + mypy type checking)
+# Lint code (ruff + pyright type checking)
 make lint
 
 # Run tests
@@ -153,7 +153,11 @@ The core library follows an orchestrator pattern with the `Graphiti` class as th
 ### Database Setup
 
 - **Neo4j**: Version 5.26+ required, available via Neo4j Desktop
+  - Database name defaults to `neo4j` (hardcoded in Neo4jDriver)
+  - Override by passing `database` parameter to driver constructor
 - **FalkorDB**: Version 1.1.2+ as alternative backend
+  - Database name defaults to `default_db` (hardcoded in FalkorDriver)
+  - Override by passing `database` parameter to driver constructor
 - Indices and constraints are automatically created on first run
 
 ## Development Guidelines
@@ -163,14 +167,19 @@ The core library follows an orchestrator pattern with the `Graphiti` class as th
 - Use Ruff for formatting and linting (configured in pyproject.toml)
 - Line length: 100 characters
 - Quote style: single quotes
-- Type checking with MyPy is enforced
+- Type checking with Pyright is enforced
+- Main project uses `typeCheckingMode = "basic"`, server uses `typeCheckingMode = "standard"`
 - Always run `make lint` before committing
 
 ### Testing Requirements
 
 - Run tests with `make test` or `pytest`
-- Integration tests require database connections
+- Integration tests require database connections and are marked with `_int` suffix
 - Use `pytest-xdist` for parallel test execution
+- Run specific test files: `pytest tests/test_specific_file.py`
+- Run specific test methods: `pytest tests/test_file.py::test_method_name`
+- Run only integration tests: `pytest tests/ -k "_int"`
+- Run only unit tests: `pytest tests/ -k "not _int"`
 - Always verify your changes don't break existing tests
 
 ### Dependency Management

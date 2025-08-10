@@ -54,9 +54,9 @@ nodes ("Kendra", "Adidas shoes"), and their relationship, or edge ("loves"). Kno
 extensively for information retrieval. What makes Graphiti unique is its ability to autonomously build a knowledge graph
 while handling changing relationships and maintaining historical context.
 
-## Graphiti and Zep Memory
+## Graphiti and Zep's Context Engineering Platform.
 
-Graphiti powers the core of [Zep's memory layer](https://www.getzep.com) for AI Agents.
+Graphiti powers the core of [Zep](https://www.getzep.com), a turn-key context engineering platform for AI Agents. Zep offers agent memory, Graph RAG for dynamic data, and context retrieval and assembly.
 
 Using Graphiti, we've demonstrated Zep is
 the [State of the Art in Agent Memory](https://blog.getzep.com/state-of-the-art-agent-memory/).
@@ -166,6 +166,14 @@ pip install graphiti-core[anthropic,groq,google-genai]
 # Install with FalkorDB and LLM providers
 pip install graphiti-core[falkordb,anthropic,google-genai]
 ```
+
+## Default to Low Concurrency; LLM Provider 429 Rate Limit Errors
+
+Graphiti's ingestion pipelines are designed for high concurrency. By default, concurrency is set low to avoid LLM Provider 429 Rate Limit Errors. If you find Graphiti slow, please increase concurrency as described below.
+
+Concurrency controlled by the `SEMAPHORE_LIMIT` environment variable. By default, `SEMAPHORE_LIMIT` is set to `10` concurrent operations to help prevent `429` rate limit errors from your LLM provider. If you encounter such errors, try lowering this value.
+
+If your LLM provider allows higher throughput, you can increase `SEMAPHORE_LIMIT` to boost episode ingestion performance.
 
 ## Quick Start
 
@@ -309,7 +317,7 @@ graphiti = Graphiti(
     "neo4j",
     "password",
     llm_client=OpenAIClient(
-        llm_config=azure_llm_config,
+        config=azure_llm_config,
         client=llm_client_azure
     ),
     embedder=OpenAIEmbedder(
@@ -319,7 +327,7 @@ graphiti = Graphiti(
         client=embedding_client_azure
     ),
     cross_encoder=OpenAIRerankerClient(
-        llm_config=LLMConfig(
+        config=LLMConfig(
             model=azure_llm_config.small_model  # Use small model for reranking
         ),
         client=llm_client_azure

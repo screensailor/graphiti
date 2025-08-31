@@ -38,8 +38,8 @@ from graphiti_core.utils.maintenance.graph_data_operations import clear_data
 load_dotenv()
 
 
-DEFAULT_LLM_MODEL = 'gpt-4.1-mini'
-SMALL_LLM_MODEL = 'gpt-4.1-nano'
+DEFAULT_LLM_MODEL = 'gpt-5-mini'
+SMALL_LLM_MODEL = 'gpt-5-nano'
 DEFAULT_EMBEDDER_MODEL = 'text-embedding-3-small'
 
 # Semaphore limit for concurrent Graphiti operations.
